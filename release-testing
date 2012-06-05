@@ -1,0 +1,43 @@
+#!/usr/bin/perl
+
+use CGI::FormBuilder;
+
+# First create our form
+my $form = CGI::FormBuilder->new(
+                name     => 'acctinfo',
+                method   => 'post',
+                stylesheet => '/path/to/style.css'
+           );
+
+# Now create form fields, in order
+# FormBuilder will automatically determine the type for you
+$form->field(name => 'fname', label => 'First Name');
+$form->field(name => 'lname', label => 'Last Name');
+
+# Setup gender field to have options
+$form->field(name => 'gender',
+             options => [qw(Male Female)] );
+
+# Include validation for the email field
+$form->field(name => 'email',
+             size => 60,
+             validate => 'EMAIL',
+             required => 1);
+
+# And the (optional) phone field
+$form->field(name => 'phone',
+             size => 10,
+             validate => '/^1?-?\d{3}-?\d{3}-?\d{4}$/',
+             comment  => '<i>optional</i>');
+
+# Check to see if we're submitted and valid
+if ($form->submitted && $form->validate) {
+    # Get form fields as hashref
+    my $field = $form->fields;
+
+    # Show confirmation screen
+    print $form->confirm(header => 1);
+} else {
+    # Print out the form
+    print $form->render(header => 1);
+}
