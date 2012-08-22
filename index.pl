@@ -62,7 +62,7 @@ if ($form->submitted && $form->validate) {
 } else {
     # Auto-fill with today's date
 
-    my $now = strftime("%d/%m/%Y", localtime);
+    my $now = strftime("%m/%d/%Y", localtime);
     $form->field(name => 'report_date',
                  value => $now);
     $form->field(name => 'package_date',
