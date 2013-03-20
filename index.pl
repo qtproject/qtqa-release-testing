@@ -34,8 +34,15 @@ sub meaning
     return $result;
 }
 
+my $toptext = "Sanity Test Guidelines can be found here: \
+<a href=http://qt-project.org/wiki/Sanity-Test-Guidelines> \
+http://qt-project.org/wiki/Sanity-Test-Guidelines</a><br> \
+Feel free to update them during your test to make them reusable \
+and helpful for other testers.";
+
 # First create our form
-my $form = CGI::FormBuilder->new(source => 'reltest-form.conf');
+my $form = CGI::FormBuilder->new(source => 'reltest-form.conf',
+                                 text => $toptext);
 
 # Check to see if we're submitted and valid
 if ($form->submitted && $form->validate) {
@@ -62,7 +69,7 @@ if ($form->submitted && $form->validate) {
 } else {
     # Auto-fill with today's date
 
-    my $now = strftime("%m/%d/%Y", localtime);
+    my $now = strftime("%Y-%m-%d", localtime);
     $form->field(name => 'report_date',
                  value => $now);
     $form->field(name => 'package_date',
